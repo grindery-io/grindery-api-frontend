@@ -94,7 +94,7 @@ const AppHeader = (props: Props) => {
       <LogoWrapper>
         <Logo variant="square" />
       </LogoWrapper>
-      <CompanyNameWrapper>API</CompanyNameWrapper>
+      <CompanyNameWrapper>Gateway</CompanyNameWrapper>
       <AppsMenuWrapper>
         <AppsMenu apps={GRINDERY_APPS} />
       </AppsMenuWrapper>

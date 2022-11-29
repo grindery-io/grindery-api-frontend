@@ -29,10 +29,28 @@ const WelcomePage = (props: Props) => {
   return (
     <Container>
       <AppHeader />
-      <Wrapper>
-        <Header />
-        {!user ? <ConnectButton /> : <GoToZapier />}
-      </Wrapper>
+
+      {!user && (
+        <Wrapper>
+          <Header />
+          <ConnectButton />
+        </Wrapper>
+      )}
+
+      {user && (
+        <>
+          <Wrapper>
+            <Header />
+          </Wrapper>
+          <div style={{ margin: "0 auto", maxWidth: "1000px" }}>
+            <zapier-full-experience
+              client-id="ji8q03SkNlf9e7Y49AUa6YSPRH5cDxzftY4W5DzF"
+              theme="light"
+              app-search-bar-display="show"
+            />
+          </div>
+        </>
+      )}
     </Container>
   );
 };
