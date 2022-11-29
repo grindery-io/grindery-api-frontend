@@ -46,7 +46,10 @@ const GoToZapier = (props: Props) => {
       <Title>Your account is active</Title>
       <button
         onClick={() => {
-          window.open(`https://zapier.com`, "_blank");
+          window.open(
+            `https://zapier.com/apps/grindery-web3-gateway/integrations`,
+            "_blank"
+          );
         }}
       >
         <span>Go to Zapier to get started</span>
