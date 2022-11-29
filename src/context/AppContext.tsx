@@ -1,5 +1,5 @@
 import NexusClient from "grindery-nexus-client";
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useCallback, useEffect, useState } from "react";
 import { useGrinderyNexus } from "use-grindery-nexus";
 import { defaultFunc } from "../helpers/utils";
 
@@ -30,7 +30,7 @@ export const AppContext = createContext<ContextProps>({
 
 export const AppContextProvider = ({ children }: AppContextProps) => {
   // Auth hook
-  const { user, connect, disconnect } = useGrinderyNexus();
+  const { user, connect, disconnect, token: nexusToken } = useGrinderyNexus();
 
   const [accessAllowed, setAccessAllowed] = useState<boolean>(false);
 
@@ -39,6 +39,18 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
 
   // Nexus API client
   const [client, setClient] = useState<NexusClient | null>(null);
+
+  // Initialize user
+  const initUser = useCallback(
+    (userId: string | null, access_token: string) => {
+      if (userId && access_token) {
+        const nexus = new NexusClient();
+        nexus.authenticate(access_token);
+        setClient(nexus);
+      }
+    },
+    []
+  );
 
   const verifyUser = async () => {
     setVerifying(true);
@@ -55,11 +67,17 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
   };
 
   useEffect(() => {
-    if (user) {
+    if (user && client) {
       verifyUser();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [user, client]);
+
+  useEffect(() => {
+    if (user) {
+      initUser(user, nexusToken?.access_token || "");
+    }
+  }, [user, initUser, nexusToken]);
 
   return (
     <AppContext.Provider
