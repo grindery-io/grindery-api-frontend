@@ -1,5 +1,5 @@
 {
-  "name": "grindery-api-frontend",
+  "name": "grindery-gateway",
   "version": "0.1.0",
   "private": true,
   "engines": {

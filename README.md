@@ -1,6 +1,6 @@
-# Grindery API App
+# Grindery Gateway Frontend
 
-Live URL: https://api.grindery.org/
+Live URL: https://gateway.grindery.org/
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

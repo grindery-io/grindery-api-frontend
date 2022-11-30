@@ -36,7 +36,9 @@ const ConnectButton = (props: Props) => {
           hideIconBorder
         />
       </ButtonWrapper>
-      <ButtonDesc>Grindery API uses MetaMask to authenticate users.</ButtonDesc>
+      <ButtonDesc>
+        Grindery Gateway uses MetaMask to authenticate users.
+      </ButtonDesc>
     </>
   ) : (
     <AlertBox color="warning" icon={<WarningIcon />}>

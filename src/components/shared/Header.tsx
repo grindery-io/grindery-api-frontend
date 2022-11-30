@@ -39,9 +39,9 @@ const Header = (props: Props) => {
   return (
     <>
       <Img src={IMAGES.WELCOME} alt="" />
-      <Title>The no-code web3 API {user ? "- READY" : ""}</Title>
+      <Title>The no-code Web3 Gateway {user ? "- READY" : ""}</Title>
       <Desc>
-        Grindery API allows you to implement Zapier workflows that read and
+        Grindery Gateway allows you to implement Zapier workflows that read and
         write data from over 10 blockchains without a single line of code and
         without having any tokens. The easiest way to Web3 is just one click
         away!
