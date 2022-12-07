@@ -42,7 +42,13 @@ const WelcomePage = (props: Props) => {
           <Wrapper>
             <Header />
           </Wrapper>
-          <div style={{ margin: "0 auto", maxWidth: "1000px" }}>
+          <div
+            style={{
+              margin: "0 auto",
+              background: "#F4F5F7",
+              maxWidth: "1000px",
+            }}
+          >
             <zapier-full-experience
               client-id="ji8q03SkNlf9e7Y49AUa6YSPRH5cDxzftY4W5DzF"
               theme="light"
