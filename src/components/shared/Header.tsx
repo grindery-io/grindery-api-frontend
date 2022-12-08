@@ -6,7 +6,7 @@ import useAppContext from "../../hooks/useAppContext";
 const Img = styled.img`
   margin: 0 auto 20px;
   width: 100%;
-  max-width: 100%;
+  max-width: 500px;
   height: auto;
 `;
 

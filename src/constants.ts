@@ -17,6 +17,7 @@ export const ICONS: { [key: string]: string } = {
   WALLET: "/images/icons/wallet.svg",
   CLOSE: "images/icons/cross-circle.svg",
   COPY: "/images/icons/copy.svg",
+  FLOW_LOGO: "/images/icons/flow-logo.png",
   // Socials
   SOCIAL_DISCORD: "/images/icons/social-discord.png",
   SOCIAL_TG: "/images/icons/social-tg.png",
@@ -30,7 +31,7 @@ export const WEB3_CONNECTORS_PATH =
   "https://api.github.com/repos/grindery-io/grindery-nexus-schema-v2/contents/cds/web3";
 
 export const IMAGES = {
-  WELCOME: "/images/welcome.svg",
+  WELCOME: "/images/welcome.png",
   NOT_SUPOORTED: "/images/grindery-ping-not-supported.svg",
   ENABLE_NOTIFICATIONS: "/images/grindery-ping-enable-notifications.svg",
   ENABLE_NOTIFICATIONS_CHROME:
