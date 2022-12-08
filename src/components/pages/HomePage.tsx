@@ -21,6 +21,15 @@ const Wrapper = styled.div`
   margin: 0 auto;
 `;
 
+const ZapierWrapper = styled.div`
+  margin: 0 auto;
+  max-width: 1000px;
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.04);
+`;
+
 type Props = {};
 
 const WelcomePage = (props: Props) => {
@@ -42,19 +51,13 @@ const WelcomePage = (props: Props) => {
           <Wrapper>
             <Header />
           </Wrapper>
-          <div
-            style={{
-              margin: "0 auto",
-              background: "#F4F5F7",
-              maxWidth: "1000px",
-            }}
-          >
+          <ZapierWrapper>
             <zapier-full-experience
               client-id="ji8q03SkNlf9e7Y49AUa6YSPRH5cDxzftY4W5DzF"
               theme="light"
               app-search-bar-display="show"
             />
-          </div>
+          </ZapierWrapper>
         </>
       )}
     </Container>
