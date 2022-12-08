@@ -33,14 +33,26 @@ const Wrapper = styled.div`
 
 const UserWrapper = styled.div`
   margin-left: 0;
+  order: 4;
   @media (min-width: ${SCREEN.TABLET}) {
     order: 4;
   }
 `;
 
 const AppsMenuWrapper = styled.div`
-  order: 3;
+  order: 4;
   margin-left: auto;
+
+  @media (max-width: ${SCREEN.TABLET}) {
+    & .apps-menu__dropdown {
+      min-width: 200px;
+      max-width: 200px;
+
+      & > ul {
+        min-width: 200px !important;
+      }
+    }
+  }
 `;
 
 const LogoWrapper = styled.div`
