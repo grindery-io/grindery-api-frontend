@@ -27,6 +27,7 @@ const ZapierWrapper = styled.div`
   background: #ffffff;
   padding: 32px;
   border-radius: 16px;
+  border: 1px solid #dcdcdc;
   box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.04);
 `;
 
