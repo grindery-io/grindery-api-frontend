@@ -69,6 +69,7 @@ const WelcomePage = (props: Props) => {
               }
               setIsOptedIn(true);
             }}
+            autoHideDuration={null}
             message="We've sent you a confirmation email. Please check your email and confirm to activate your account."
             severity="warning"
           />
