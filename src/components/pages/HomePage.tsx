@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
+import { Snackbar } from "grindery-ui";
 import ConnectButton from "../shared/ConnectButton";
 import useAppContext from "../../hooks/useAppContext";
 import Header from "../shared/Header";
 import AppHeader from "../shared/AppHeader";
-import GoToZapier from "../shared/GoToZapier";
+//import GoToZapier from "../shared/GoToZapier";
 
 const Container = styled.div`
   padding: 120px 20px 60px;
@@ -34,7 +35,8 @@ const ZapierWrapper = styled.div`
 type Props = {};
 
 const WelcomePage = (props: Props) => {
-  const { user } = useAppContext();
+  const { user, chekingOptIn, isOptedIn, setIsOptedIn, accessAllowed } =
+    useAppContext();
 
   return (
     <Container>
@@ -59,6 +61,17 @@ const WelcomePage = (props: Props) => {
               app-search-bar-display="show"
             />
           </ZapierWrapper>
+          <Snackbar
+            open={accessAllowed && !chekingOptIn && !isOptedIn}
+            handleClose={(event: any, reason: any) => {
+              if (reason === "clickaway") {
+                return;
+              }
+              setIsOptedIn(true);
+            }}
+            message="We've sent you a confirmation email. Please check your email and confirm to activate your account."
+            severity="warning"
+          />
         </>
       )}
     </Container>

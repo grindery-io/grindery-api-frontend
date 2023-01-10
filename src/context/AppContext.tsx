@@ -11,6 +11,9 @@ type ContextProps = {
   accessAllowed: boolean;
   verifying: boolean;
   client: NexusClient | null;
+  isOptedIn: boolean;
+  chekingOptIn: boolean;
+  setIsOptedIn: (a: boolean) => void;
 };
 
 // Context provider props
@@ -26,6 +29,9 @@ export const AppContext = createContext<ContextProps>({
   accessAllowed: false,
   verifying: true,
   client: null,
+  isOptedIn: false,
+  chekingOptIn: true,
+  setIsOptedIn: () => {},
 });
 
 export const AppContextProvider = ({ children }: AppContextProps) => {
@@ -33,6 +39,10 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
   const { user, connect, disconnect, token: nexusToken } = useGrinderyNexus();
 
   const [accessAllowed, setAccessAllowed] = useState<boolean>(false);
+
+  const [isOptedIn, setIsOptedIn] = useState<boolean>(false);
+
+  const [chekingOptIn, setChekingOptIn] = useState<boolean>(true);
 
   // verification state
   const [verifying, setVerifying] = useState<boolean>(true);
@@ -54,15 +64,25 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
 
   const verifyUser = async () => {
     setVerifying(true);
-    const res = await client?.isAllowedUser("gateway").catch((err) => {
-      console.error("isAllowedUser error:", err.message);
+    const res = await client?.isUserHasEmail().catch((err) => {
+      console.error("isUserHasEmail error:", err.message);
       setAccessAllowed(false);
     });
     if (res) {
       setAccessAllowed(true);
+      const optinRes = await client?.isAllowedUser().catch((err) => {
+        console.error("isAllowedUser error:", err.message);
+        setIsOptedIn(false);
+      });
+      if (optinRes) {
+        setIsOptedIn(true);
+      } else {
+        setIsOptedIn(false);
+      }
     } else {
       setAccessAllowed(false);
     }
+    setChekingOptIn(false);
     setVerifying(false);
   };
 
@@ -88,6 +108,9 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
         accessAllowed,
         verifying,
         client,
+        isOptedIn,
+        chekingOptIn,
+        setIsOptedIn,
       }}
     >
       {children}

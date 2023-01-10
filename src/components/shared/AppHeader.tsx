@@ -32,7 +32,7 @@ const Wrapper = styled.div`
 `;
 
 const UserWrapper = styled.div`
-  margin-left: 0;
+  margin-left: auto;
   order: 4;
   @media (min-width: ${SCREEN.TABLET}) {
     order: 4;
@@ -73,6 +73,7 @@ const CompanyNameWrapper = styled.div`
 
 const ConnectWrapper = styled.div`
   display: none;
+  margin-left: auto;
   @media (min-width: ${SCREEN.TABLET}) {
     order: 4;
     display: block;
@@ -108,9 +109,9 @@ const AppHeader = (props: Props) => {
         <Logo variant="square" />
       </LogoWrapper>
       <CompanyNameWrapper>Gateway</CompanyNameWrapper>
-      <AppsMenuWrapper>
+      {/*<AppsMenuWrapper>
         <AppsMenu apps={GRINDERY_APPS} />
-      </AppsMenuWrapper>
+      </AppsMenuWrapper>*/}
       {!user && "ethereum" in window && (
         <ConnectWrapper>
           <button
