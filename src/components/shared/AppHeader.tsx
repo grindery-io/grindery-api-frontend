@@ -32,14 +32,14 @@ const Wrapper = styled.div`
 `;
 
 const UserWrapper = styled.div`
-  margin-left: auto;
+  margin-left: 20px;
   order: 4;
   @media (min-width: ${SCREEN.TABLET}) {
     order: 4;
   }
 `;
 
-const AppsMenuWrapper = styled.div`
+/*const AppsMenuWrapper = styled.div`
   order: 4;
   margin-left: auto;
 
@@ -53,7 +53,7 @@ const AppsMenuWrapper = styled.div`
       }
     }
   }
-`;
+`;*/
 
 const LogoWrapper = styled.div`
   @media (min-width: ${SCREEN.TABLET}) {
@@ -71,9 +71,29 @@ const CompanyNameWrapper = styled.div`
   cursor: pointer;
 `;
 
+const LinksWrapper = styled.div`
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 20px;
+  order: 3;
+
+  & a {
+    font-size: 16px;
+    line-height: 150%;
+    text-decoration: none;
+    display: inline-block;
+    color: #0b0d17;
+    cursor: pointer;
+  }
+`;
+
 const ConnectWrapper = styled.div`
   display: none;
-  margin-left: auto;
+  margin-left: 20px;
   @media (min-width: ${SCREEN.TABLET}) {
     order: 4;
     display: block;
@@ -112,6 +132,22 @@ const AppHeader = (props: Props) => {
       {/*<AppsMenuWrapper>
         <AppsMenu apps={GRINDERY_APPS} />
       </AppsMenuWrapper>*/}
+      <LinksWrapper>
+        <a
+          href="https://www.grindery.io/wallet-course"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Course
+        </a>
+        <a
+          href="https://discord.gg/PCMTWg3KzE"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Support
+        </a>
+      </LinksWrapper>
       {!user && "ethereum" in window && (
         <ConnectWrapper>
           <button
