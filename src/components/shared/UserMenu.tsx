@@ -6,6 +6,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import { ICONS } from "../../constants";
 import { useGrinderyNexus } from "use-grindery-nexus";
 import { Snackbar } from "grindery-ui";
+import AccountModal from "./AccountModal";
 
 const UserContainer = styled.div`
   position: relative;
@@ -126,6 +127,7 @@ const UserMenu = (props: Props) => {
   const { address, disconnect } = useGrinderyNexus();
   const [menuOpened, setMenuOpened] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [accountOpened, setAccountOpened] = useState(false);
 
   return address ? (
     <UserContainer>
@@ -169,6 +171,14 @@ const UserMenu = (props: Props) => {
             </CopyToClipboard>
             <button
               onClick={() => {
+                setAccountOpened(true);
+              }}
+            >
+              <img src={ICONS.ACCOUNT} alt="" />
+              <span>Account details</span>
+            </button>
+            <button
+              onClick={() => {
                 disconnect();
               }}
             >
@@ -187,6 +197,12 @@ const UserMenu = (props: Props) => {
         hideCloseButton
         autoHideDuration={2000}
         severity="success"
+      />
+      <AccountModal
+        open={accountOpened}
+        onClose={() => {
+          setAccountOpened(false);
+        }}
       />
     </UserContainer>
   ) : null;

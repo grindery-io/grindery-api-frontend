@@ -18,6 +18,8 @@ export const ICONS: { [key: string]: string } = {
   CLOSE: "images/icons/cross-circle.svg",
   COPY: "/images/icons/copy.svg",
   FLOW_LOGO: "/images/icons/flow-logo.png",
+  ACCOUNT: "/images/icons/account.svg",
+  CROSS: "/images/icons/cross.svg",
   // Socials
   SOCIAL_DISCORD: "/images/icons/social-discord.png",
   SOCIAL_TG: "/images/icons/social-tg.png",
