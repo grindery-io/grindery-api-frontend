@@ -1,11 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { useGrinderyNexus } from "use-grindery-nexus";
 import { ICONS } from "../../constants";
 import useAppContext from "../../hooks/useAppContext";
 import AlertBox from "./AlertBox";
 import Button from "./Button";
-import WarningIcon from "./WarningIcon";
 
 const ButtonWrapper = styled.div`
   margin: 10px auto 0;
@@ -20,18 +18,10 @@ const ButtonDesc = styled.p`
   margin: 5px 0 0;
 `;
 
-const FlowConnectButtonWrapper = styled.div`
-  margin: 0 auto 0;
-  .MuiButton-root {
-    margin-top: 0 !important;
-  }
-`;
-
 type Props = {};
 
 const ConnectButton = (props: Props) => {
   const { user, connect } = useAppContext();
-  const { connectFlow } = useGrinderyNexus();
 
   return user ? null : (
     <>

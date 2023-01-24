@@ -7,6 +7,7 @@ import { ICONS } from "../../constants";
 import { useGrinderyNexus } from "use-grindery-nexus";
 import { Snackbar } from "grindery-ui";
 import AccountModal from "./AccountModal";
+import useAppContext from "../../hooks/useAppContext";
 
 const UserContainer = styled.div`
   position: relative;
@@ -124,6 +125,7 @@ type Props = {
 
 const UserMenu = (props: Props) => {
   const mode = props.mode || "light";
+  const { userEmail } = useAppContext();
   const { address, disconnect } = useGrinderyNexus();
   const [menuOpened, setMenuOpened] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -169,14 +171,16 @@ const UserMenu = (props: Props) => {
                 <span>{"Copy wallet addres"}</span>
               </button>
             </CopyToClipboard>
-            <button
-              onClick={() => {
-                setAccountOpened(true);
-              }}
-            >
-              <img src={ICONS.ACCOUNT} alt="" />
-              <span>Account details</span>
-            </button>
+            {userEmail && (
+              <button
+                onClick={() => {
+                  setAccountOpened(true);
+                }}
+              >
+                <img src={ICONS.ACCOUNT} alt="" />
+                <span>Account details</span>
+              </button>
+            )}
             <button
               onClick={() => {
                 disconnect();
@@ -198,12 +202,14 @@ const UserMenu = (props: Props) => {
         autoHideDuration={2000}
         severity="success"
       />
-      <AccountModal
-        open={accountOpened}
-        onClose={() => {
-          setAccountOpened(false);
-        }}
-      />
+      {userEmail && (
+        <AccountModal
+          open={accountOpened}
+          onClose={() => {
+            setAccountOpened(false);
+          }}
+        />
+      )}
     </UserContainer>
   ) : null;
 };

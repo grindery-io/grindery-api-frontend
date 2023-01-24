@@ -13,7 +13,9 @@ type ContextProps = {
   client: NexusClient | null;
   isOptedIn: boolean;
   chekingOptIn: boolean;
+  userEmail: string;
   setIsOptedIn: (a: boolean) => void;
+  setUserEmail: (a: string) => void;
 };
 
 // Context provider props
@@ -31,7 +33,9 @@ export const AppContext = createContext<ContextProps>({
   client: null,
   isOptedIn: false,
   chekingOptIn: true,
+  userEmail: "",
   setIsOptedIn: () => {},
+  setUserEmail: () => {},
 });
 
 export const AppContextProvider = ({ children }: AppContextProps) => {
@@ -49,6 +53,8 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
 
   // Nexus API client
   const [client, setClient] = useState<NexusClient | null>(null);
+
+  const [userEmail, setUserEmail] = useState("");
 
   // Initialize user
   const initUser = useCallback(
@@ -69,6 +75,7 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
       setAccessAllowed(false);
     });
     if (res) {
+      setUserEmail(res);
       setAccessAllowed(true);
       const optinRes = await client?.isAllowedUser().catch((err) => {
         console.error("isAllowedUser error:", err.message);
@@ -80,6 +87,7 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
         setIsOptedIn(false);
       }
     } else {
+      setUserEmail("");
       setAccessAllowed(false);
     }
     setChekingOptIn(false);
@@ -110,7 +118,9 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
         client,
         isOptedIn,
         chekingOptIn,
+        userEmail,
         setIsOptedIn,
+        setUserEmail,
       }}
     >
       {children}

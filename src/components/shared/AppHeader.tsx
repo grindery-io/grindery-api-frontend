@@ -1,9 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { AppsMenu } from "grindery-ui";
 import useAppContext from "../../hooks/useAppContext";
 import Logo from "./Logo";
-import { GRINDERY_APPS, SCREEN } from "../../constants";
+import { SCREEN } from "../../constants";
 import UserMenu from "./UserMenu";
 import { useGrinderyNexus } from "use-grindery-nexus";
 

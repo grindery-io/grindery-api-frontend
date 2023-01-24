@@ -5597,10 +5597,10 @@ grapheme-splitter@^1.0.4:
   resolved "https://registry.yarnpkg.com/grapheme-splitter/-/grapheme-splitter-1.0.4.tgz#9cf3a665c6247479896834af35cf1dbb4400767e"
   integrity sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==
 
-grindery-nexus-client@^0.9.10:
-  version "0.9.10"
-  resolved "https://registry.yarnpkg.com/grindery-nexus-client/-/grindery-nexus-client-0.9.10.tgz#57a9fe07e9a917aa852bf11bee6a06abed0f1ad5"
-  integrity sha512-csR+otKNgpQ0ZXs564ZtXejeU6veYQo7I792XBlYu4Wn0Kc2ejPQsOquYzY5wDvTUcbAhRzqNwL5RXcKKZWYBg==
+grindery-nexus-client@^0.9.11:
+  version "0.9.11"
+  resolved "https://registry.yarnpkg.com/grindery-nexus-client/-/grindery-nexus-client-0.9.11.tgz#81b02260c5926cd8f82d58642341c53733065623"
+  integrity sha512-EBJ7bsX4rDm/1NSOa2R9nsVISihoKgW6j1v65inY5WONvT2MOzZhd/F+LxOhXaD5pYGT9vN1p+64f2wfHXitww==
   dependencies:
     axios "^0.27.2"
     jwt-decode "^3.1.2"

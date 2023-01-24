@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Snackbar, Dialog } from "grindery-ui";
 import { ICONS } from "../../constants";
 import { useGrinderyNexus } from "use-grindery-nexus";
+import useAppContext from "../../hooks/useAppContext";
 
 const Container = styled.div`
   padding: 40px;
@@ -14,6 +15,14 @@ const Container = styled.div`
 
     &:hover {
       box-shadow: 0px 4px 8px rgba(106, 71, 147, 0.1);
+    }
+
+    &:disabled {
+      background: #706e6e;
+      border: 1px solid #706e6e;
+      opacity: 0.4;
+      cursor: not-allowed;
+      color: #ffffff;
     }
   }
 `;
@@ -236,6 +245,16 @@ const ButtonsWrapper = styled.div`
   flex-wrap: nowrap;
 `;
 
+const ErrorMessage = styled.p`
+  margin: 24px 0 0;
+  text-align: center;
+  padding: 0;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  color: #ff5858;
+`;
+
 type Props = {
   open: boolean;
   onClose: () => void;
@@ -243,11 +262,14 @@ type Props = {
 
 const AccountModal = (props: Props) => {
   const { address } = useGrinderyNexus();
+  const { client, disconnect, userEmail, setUserEmail } = useAppContext();
   const { open, onClose } = props;
   const [view, setView] = useState("account_edit");
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(userEmail || "");
   const [wallet, setWallet] = useState("");
   const [snackbar, setSnackbar] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleClose = () => {
     onClose();
@@ -278,17 +300,72 @@ const AccountModal = (props: Props) => {
     setView("account_edit");
   };
 
-  const handleConfirmDeleteClick = () => {
-    handleClose();
-    setSnackbar("Account deletion is not implemented");
+  const handleConfirmDeleteClick = async () => {
+    setLoading(true);
+    let res;
+    try {
+      res = await client?.deleteUser();
+    } catch (error: any) {
+      setError(
+        error?.message ||
+          "Server error, account wasn't deleted. Please, try again later."
+      );
+      setLoading(false);
+      return;
+    }
+    if (res) {
+      handleClose();
+      setSnackbar("Your account was successfully deleted.");
+      setError("");
+      setTimeout(() => {
+        disconnect();
+        window.location.reload();
+      }, 1500);
+    } else {
+      setSnackbar("");
+      setError(
+        "Server error, account wasn't deleted. Please, try again later."
+      );
+    }
+    setLoading(false);
   };
 
-  const handleSaveButtonClick = () => {
-    handleClose();
-    setSnackbar("Email saving is not implemented");
+  const handleSaveButtonClick = async () => {
+    setLoading(true);
+    let res;
+    try {
+      res = await client?.updateUserEmail(email);
+    } catch (error: any) {
+      setError(
+        error?.message ||
+          "Server error, email wasn't updated. Please, try again later."
+      );
+      setLoading(false);
+      return;
+    }
+    if (res) {
+      handleClose();
+      setSnackbar("Email updated");
+      setError("");
+      let newEmail;
+      try {
+        newEmail = await client?.isUserHasEmail();
+      } catch (error) {
+        //
+      }
+      setUserEmail(newEmail || "");
+    } else {
+      setSnackbar("");
+      setError("Server error, email wasn't updated. Please, try again later.");
+    }
+    setLoading(false);
   };
 
-  return (
+  useEffect(() => {
+    setEmail(userEmail || "");
+  }, [userEmail]);
+
+  return userEmail ? (
     <>
       <Dialog open={open} onClose={handleClose} maxWidth="604px">
         <Container>
@@ -336,7 +413,10 @@ const AccountModal = (props: Props) => {
                   </defs>
                 </svg>
               </DeleteAccountButton>
-              <SaveButton disabled={!email} onClick={handleSaveButtonClick}>
+              <SaveButton
+                disabled={loading || !email}
+                onClick={handleSaveButtonClick}
+              >
                 Save
               </SaveButton>
             </>
@@ -391,7 +471,7 @@ const AccountModal = (props: Props) => {
                   Cancel
                 </CancelButton>
                 <ConfirmDeleteButton
-                  disabled={address !== wallet}
+                  disabled={loading || address !== wallet}
                   onClick={handleConfirmDeleteClick}
                 >
                   Delete account
@@ -399,6 +479,7 @@ const AccountModal = (props: Props) => {
               </ButtonsWrapper>
             </>
           )}
+          {error && <ErrorMessage>{error}</ErrorMessage>}
         </Container>
       </Dialog>
       <Snackbar
@@ -412,7 +493,7 @@ const AccountModal = (props: Props) => {
         severity="success"
       />
     </>
-  );
+  ) : null;
 };
 
 export default AccountModal;
