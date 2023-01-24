@@ -75,7 +75,11 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
       setAccessAllowed(false);
     });
     if (res) {
-      setUserEmail(res);
+      const email = await client?.getUserEmail().catch((err) => {
+        console.error("getUserEmail error:", err.message);
+        setUserEmail("");
+      });
+      setUserEmail(email || "");
       setAccessAllowed(true);
       const optinRes = await client?.isAllowedUser().catch((err) => {
         console.error("isAllowedUser error:", err.message);
@@ -87,7 +91,6 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
         setIsOptedIn(false);
       }
     } else {
-      setUserEmail("");
       setAccessAllowed(false);
     }
     setChekingOptIn(false);

@@ -276,7 +276,7 @@ const AccountModal = (props: Props) => {
     setTimeout(() => {
       setView("account_edit");
       setWallet("");
-      setEmail("");
+      setEmail(userEmail);
     }, 500);
   };
 
@@ -294,10 +294,12 @@ const AccountModal = (props: Props) => {
 
   const handleBackButtonClick = () => {
     setView("account_edit");
+    setWallet("");
   };
 
   const handleCancelButtonClick = () => {
     setView("account_edit");
+    setWallet("");
   };
 
   const handleConfirmDeleteClick = async () => {
@@ -347,12 +349,9 @@ const AccountModal = (props: Props) => {
       handleClose();
       setSnackbar("Email updated");
       setError("");
-      let newEmail;
-      try {
-        newEmail = await client?.isUserHasEmail();
-      } catch (error) {
-        //
-      }
+      const newEmail = await client?.getUserEmail().catch((error) => {
+        console.error("getUserEmail error", error.message || "Server error");
+      });
       setUserEmail(newEmail || "");
     } else {
       setSnackbar("");
