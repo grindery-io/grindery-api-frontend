@@ -454,7 +454,7 @@ const AccountModal = (props: Props) => {
                 <ul>
                   <li>Your Grindery account</li>
                   <li>All your workflows</li>
-                  <li>All workspaces where you are the only member</li>
+                  <li>All workspaces where you are the only admin</li>
                 </ul>
               </Text>
               <InputWrapper>
