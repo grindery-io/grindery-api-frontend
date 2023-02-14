@@ -8,6 +8,7 @@ import { useGrinderyNexus } from "use-grindery-nexus";
 import { Snackbar } from "grindery-ui";
 import AccountModal from "./AccountModal";
 import useAppContext from "../../hooks/useAppContext";
+import { useNavigate } from "react-router";
 
 const UserContainer = styled.div`
   position: relative;
@@ -125,11 +126,11 @@ type Props = {
 
 const UserMenu = (props: Props) => {
   const mode = props.mode || "light";
+  let navigate = useNavigate();
   const { userEmail } = useAppContext();
   const { address, disconnect } = useGrinderyNexus();
   const [menuOpened, setMenuOpened] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [accountOpened, setAccountOpened] = useState(false);
 
   return address ? (
     <UserContainer>
@@ -174,7 +175,7 @@ const UserMenu = (props: Props) => {
             {userEmail && (
               <button
                 onClick={() => {
-                  setAccountOpened(true);
+                  navigate("/account");
                 }}
               >
                 <img src={ICONS.ACCOUNT} alt="" />
@@ -202,14 +203,6 @@ const UserMenu = (props: Props) => {
         autoHideDuration={2000}
         severity="success"
       />
-      {userEmail && (
-        <AccountModal
-          open={accountOpened}
-          onClose={() => {
-            setAccountOpened(false);
-          }}
-        />
-      )}
     </UserContainer>
   ) : null;
 };

@@ -1,9 +1,11 @@
 import React from "react";
 import { ThemeProvider } from "grindery-ui";
 import GrinderyNexusContextProvider from "use-grindery-nexus";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import AppContextProvider from "./context/AppContext";
 import HomePage from "./components/pages/HomePage";
 import EarlyAccessModal from "./components/shared/EarlyAccessModal";
+import AccountPage from "./components/pages/AccountPage";
 
 function App() {
   return (
@@ -11,7 +13,13 @@ function App() {
       <GrinderyNexusContextProvider>
         <AppContextProvider>
           <EarlyAccessModal />
-          <HomePage />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/account" element={<AccountPage />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </BrowserRouter>
         </AppContextProvider>
       </GrinderyNexusContextProvider>
     </ThemeProvider>

@@ -5,6 +5,7 @@ import Logo from "./Logo";
 import { SCREEN } from "../../constants";
 import UserMenu from "./UserMenu";
 import { useGrinderyNexus } from "use-grindery-nexus";
+import { useNavigate } from "react-router";
 
 const Wrapper = styled.div`
   border-bottom: 1px solid #dcdcdc;
@@ -54,13 +55,15 @@ const UserWrapper = styled.div`
   }
 `;*/
 
-const LogoWrapper = styled.div`
+const LogoWrapper = styled.a`
+  display: block;
+  text-decoration: none;
   @media (min-width: ${SCREEN.TABLET}) {
     order: 2;
   }
 `;
 
-const CompanyNameWrapper = styled.div`
+const CompanyNameWrapper = styled.a`
   display: block;
   order: 3;
   font-weight: 700;
@@ -68,6 +71,7 @@ const CompanyNameWrapper = styled.div`
   line-height: 110%;
   color: #0b0d17;
   cursor: pointer;
+  text-decoration: none;
 `;
 
 const LinksWrapper = styled.div`
@@ -119,15 +123,30 @@ const ConnectWrapper = styled.div`
 type Props = {};
 
 const AppHeader = (props: Props) => {
+  let navigate = useNavigate();
   const { user } = useAppContext();
   const { connect } = useGrinderyNexus();
 
   return (
     <Wrapper>
-      <LogoWrapper>
+      <LogoWrapper
+        href="/"
+        onClick={(e: React.MouseEvent<HTMLElement>) => {
+          e.preventDefault();
+          navigate("/");
+        }}
+      >
         <Logo variant="square" />
       </LogoWrapper>
-      <CompanyNameWrapper>Gateway</CompanyNameWrapper>
+      <CompanyNameWrapper
+        href="/"
+        onClick={(e: React.MouseEvent<HTMLElement>) => {
+          e.preventDefault();
+          navigate("/");
+        }}
+      >
+        Gateway
+      </CompanyNameWrapper>
       {/*<AppsMenuWrapper>
         <AppsMenu apps={GRINDERY_APPS} />
       </AppsMenuWrapper>*/}
