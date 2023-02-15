@@ -274,7 +274,7 @@ const AccountPage = (props: Props) => {
     setTimeout(() => {
       setView("account_edit");
       setWallet("");
-      setEmail(userEmail);
+      //setEmail(userEmail);
     }, 500);
   };
 
@@ -336,9 +336,13 @@ const AccountPage = (props: Props) => {
     try {
       res = await client?.updateUserEmail(email);
     } catch (error: any) {
+      console.log("updateUserEmail error:", error);
+
       setError(
-        error?.message ||
-          "Server error, email wasn't updated. Please, try again later."
+        error?.message && error.message.includes("A contact with the email")
+          ? "A user with this email already exists."
+          : error?.message ||
+              "Server error, email wasn't updated. Please, try again later."
       );
       setLoading(false);
       return;
