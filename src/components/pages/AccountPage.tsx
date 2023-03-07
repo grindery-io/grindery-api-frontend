@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Snackbar } from "grindery-ui";
+import { Snackbar, RichInput, Select } from "grindery-ui";
 import ConnectButton from "../shared/ConnectButton";
 import styled from "styled-components";
 import { useGrinderyNexus } from "use-grindery-nexus";
 import useAppContext from "../../hooks/useAppContext";
 import Header from "../shared/Header";
 import AppHeader from "../shared/AppHeader";
+import { validateEmail } from "../../helpers/utils";
 
 const Container = styled.div`
   padding: 120px 20px 60px;
@@ -203,7 +204,7 @@ const DeleteAccountButton = styled.button`
   border: 1px solid #dcdcdc;
   border-radius: 8px;
   padding: 16px;
-  margin: 0 0 24px;
+  margin: 40px 0 24px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -260,15 +261,24 @@ const ErrorMessage = styled.p`
 type Props = {};
 
 const AccountPage = (props: Props) => {
-  const { user, client, disconnect, userEmail, setUserEmail } = useAppContext();
+  const { user, client, disconnect, userProps, setUserProps } = useAppContext();
 
   const { address } = useGrinderyNexus();
   const [view, setView] = useState("account_edit");
-  const [email, setEmail] = useState(userEmail || "");
+  const [email, setEmail] = useState(userProps.email || "");
+  const [firstname, setFirstname] = useState(userProps.firstname || "");
+  const [lastname, setLastname] = useState(userProps.lastname || "");
   const [wallet, setWallet] = useState("");
+  const [interest, setInterest] = useState(
+    (userProps.interest && userProps.interest.split(";")) || [""]
+  );
+  const [skill, setSkill] = useState(
+    (userProps.skill && userProps.skill.split(";")) || [""]
+  );
   const [snackbar, setSnackbar] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [key, setKey] = useState(0);
 
   const handleClose = () => {
     setTimeout(() => {
@@ -276,10 +286,6 @@ const AccountPage = (props: Props) => {
       setWallet("");
       //setEmail(userEmail);
     }, 500);
-  };
-
-  const handleEmailChange = (event: React.FormEvent<HTMLInputElement>) => {
-    setEmail(event.currentTarget.value);
   };
 
   const handleWalletChange = (event: React.FormEvent<HTMLInputElement>) => {
@@ -334,37 +340,50 @@ const AccountPage = (props: Props) => {
     setLoading(true);
     let res;
     try {
-      res = await client?.updateUserEmail(email);
+      res = await client?.updateUserProps({
+        email,
+        firstname,
+        lastname,
+        interest: interest.join(";"),
+        skill: skill.join(";"),
+      });
     } catch (error: any) {
-      console.log("updateUserEmail error:", error);
+      console.log("updateUserProps error:", error);
 
       setError(
         error?.message && error.message.includes("A contact with the email")
           ? "A user with this email already exists."
           : error?.message ||
-              "Server error, email wasn't updated. Please, try again later."
+              "Server error, account wasn't updated. Please, try again later."
       );
       setLoading(false);
       return;
     }
     if (res) {
       handleClose();
-      setSnackbar("Email updated");
+      setSnackbar("Account updated");
       setError("");
-      const newEmail = await client?.getUserEmail().catch((error) => {
-        console.error("getUserEmail error", error.message || "Server error");
+      const newProps = await client?.getUserProps().catch((error) => {
+        console.error("getUserProps error", error.message || "Server error");
       });
-      setUserEmail(newEmail || "");
+      setUserProps(newProps || {});
     } else {
       setSnackbar("");
-      setError("Server error, email wasn't updated. Please, try again later.");
+      setError(
+        "Server error, account wasn't updated. Please, try again later."
+      );
     }
     setLoading(false);
   };
 
   useEffect(() => {
-    setEmail(userEmail || "");
-  }, [userEmail]);
+    setEmail(userProps.email || "");
+    setFirstname(userProps.firstname || "");
+    setLastname(userProps.lastname || "");
+    setInterest((userProps.interest && userProps.interest.split(";")) || [""]);
+    setSkill((userProps.skill && userProps.skill.split(";")) || [""]);
+    setKey((_key) => _key + 1);
+  }, [userProps]);
 
   return (
     <Container>
@@ -383,14 +402,79 @@ const AccountPage = (props: Props) => {
             {view && view === "account_edit" && (
               <>
                 <Title>Account details</Title>
-                <InputWrapper>
-                  <span>Email</span>
-                  <Input
-                    type="email"
-                    value={email}
-                    onChange={handleEmailChange}
-                  />
-                </InputWrapper>
+                <RichInput
+                  key={`email_${key}`}
+                  label="Email"
+                  value={email}
+                  onChange={(value: string) => {
+                    setEmail(value);
+                  }}
+                  options={[]}
+                />
+                <RichInput
+                  key={`firstname_${key}`}
+                  label="First Name"
+                  value={firstname}
+                  onChange={(value: string) => {
+                    setFirstname(value);
+                  }}
+                  options={[]}
+                />
+                <RichInput
+                  key={`lastname_${key}`}
+                  label="Last Name"
+                  value={lastname}
+                  onChange={(value: string) => {
+                    setLastname(value);
+                  }}
+                  options={[]}
+                />
+                <Select
+                  options={[
+                    {
+                      value: "dApp2Zapier",
+                      label: "Connect a specific dApp to Zapier",
+                    },
+                    {
+                      value: "MyDapp2Zapier",
+                      label: "Publish my dApp on Zapier",
+                    },
+                    { value: "Learn", label: "Browse and learn" },
+                    { value: "else", label: "Something else" },
+                  ]}
+                  type={"default"}
+                  multiple={true}
+                  value={interest}
+                  onChange={(value: string[]) => {
+                    setInterest(value);
+                  }}
+                  label="What brings you here?"
+                  placeholder=""
+                  tooltip="When we know what you are trying to do we can help you and personalize information and emails for you!"
+                ></Select>
+                <Select
+                  options={[
+                    {
+                      value: "web3",
+                      label: "I'm a web3 buildler",
+                    },
+                    {
+                      value: "zapier",
+                      label: "I'm a Zapier guru",
+                    },
+                    { value: "code", label: "I'm a coding wizard" },
+                    { value: "human", label: "I'm only human" },
+                  ]}
+                  type={"default"}
+                  multiple={true}
+                  value={skill}
+                  onChange={(value: string[]) => {
+                    setSkill(value);
+                  }}
+                  label="What describes your best?"
+                  placeholder=""
+                  tooltip="When we better understand your skills we can show you the right tutorials and courses."
+                ></Select>
                 <DeleteAccountButton onClick={handleDeleteAccountButtonClick}>
                   <div>
                     <strong>Delete my account</strong>
@@ -422,7 +506,7 @@ const AccountPage = (props: Props) => {
                   </svg>
                 </DeleteAccountButton>
                 <SaveButton
-                  disabled={loading || !email}
+                  disabled={loading || !email || !validateEmail(email)}
                   onClick={handleSaveButtonClick}
                 >
                   Save

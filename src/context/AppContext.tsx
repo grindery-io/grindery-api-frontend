@@ -14,8 +14,10 @@ type ContextProps = {
   isOptedIn: boolean;
   chekingOptIn: boolean;
   userEmail: string;
+  userProps: any;
   setIsOptedIn: (a: boolean) => void;
   setUserEmail: (a: string) => void;
+  setUserProps: (a: any) => void;
 };
 
 // Context provider props
@@ -34,8 +36,10 @@ export const AppContext = createContext<ContextProps>({
   isOptedIn: false,
   chekingOptIn: true,
   userEmail: "",
+  userProps: {},
   setIsOptedIn: () => {},
   setUserEmail: () => {},
+  setUserProps: () => {},
 });
 
 export const AppContextProvider = ({ children }: AppContextProps) => {
@@ -56,6 +60,8 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
 
   const [userEmail, setUserEmail] = useState("");
 
+  const [userProps, setUserProps] = useState<any>({});
+
   // Initialize user
   const initUser = useCallback(
     (userId: string | null, access_token: string) => {
@@ -75,11 +81,11 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
       setAccessAllowed(false);
     });
     if (res) {
-      const email = await client?.getUserEmail().catch((err) => {
-        console.error("getUserEmail error:", err.message);
-        setUserEmail("");
+      const props = await client?.getUserProps().catch((err) => {
+        console.error("getUserProps error:", err.message);
+        setUserProps("");
       });
-      setUserEmail(email || "");
+      setUserProps(props || {});
       setAccessAllowed(true);
       const optinRes = await client?.isAllowedUser().catch((err) => {
         console.error("isAllowedUser error:", err.message);
@@ -124,6 +130,8 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
         userEmail,
         setIsOptedIn,
         setUserEmail,
+        userProps,
+        setUserProps,
       }}
     >
       {children}
