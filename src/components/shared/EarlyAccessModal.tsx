@@ -175,6 +175,8 @@ const EarlyAccessModal = (props: Props) => {
   const [consent, setConsent] = useState(false);
   const [error, setError] = useState({ type: "", text: "" });
   const [success, setSuccess] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
 
   const validate = () => {
     if (!email) {
@@ -208,6 +210,8 @@ const EarlyAccessModal = (props: Props) => {
         email,
         source: "gateway.grindery.org",
         app: "Requested to Gateway",
+        firstname,
+        lastname,
         interest: interest.join(";"),
         skill: skill.join(";"),
       })
@@ -279,7 +283,22 @@ const EarlyAccessModal = (props: Props) => {
                 required
                 options={[]}
               />
-
+              <RichInput
+                label="First Name"
+                value={firstname}
+                onChange={(value: string) => {
+                  setFirstname(value);
+                }}
+                options={[]}
+              />
+              <RichInput
+                label="Last Name"
+                value={lastname}
+                onChange={(value: string) => {
+                  setLastname(value);
+                }}
+                options={[]}
+              />
               <CheckboxTitle>What brings you here?</CheckboxTitle>
               <CheckboxSubTitle>
                 When we know what you are trying to do we can help you and
