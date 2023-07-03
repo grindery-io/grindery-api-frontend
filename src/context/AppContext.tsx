@@ -2,6 +2,7 @@ import NexusClient from "grindery-nexus-client";
 import React, { createContext, useCallback, useEffect, useState } from "react";
 import { useGrinderyNexus } from "use-grindery-nexus";
 import { defaultFunc } from "../helpers/utils";
+import { sendTwitterConversion } from "../utils/twitterTracking";
 
 // Context props
 type ContextProps = {
@@ -115,6 +116,12 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
       initUser(user, nexusToken?.access_token || "");
     }
   }, [user, initUser, nexusToken]);
+
+  useEffect(() => {
+    if (user) {
+      sendTwitterConversion("tw-ofep3-ofep7");
+    }
+  }, [user]);
 
   return (
     <AppContext.Provider
