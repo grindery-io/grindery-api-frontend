@@ -4,7 +4,7 @@ import useAppContext from "../../hooks/useAppContext";
 import Logo from "./Logo";
 import { SCREEN } from "../../constants";
 import UserMenu from "./UserMenu";
-import { useGrinderyNexus } from "use-grindery-nexus";
+import { useGrinderyLogin } from "use-grindery-login";
 import { useNavigate } from "react-router";
 
 const Wrapper = styled.div`
@@ -125,7 +125,7 @@ type Props = {};
 const AppHeader = (props: Props) => {
   let navigate = useNavigate();
   const { user } = useAppContext();
-  const { connect } = useGrinderyNexus();
+  const { connect } = useGrinderyLogin();
 
   return (
     <Wrapper>
@@ -166,7 +166,7 @@ const AppHeader = (props: Props) => {
           Support
         </a>
       </LinksWrapper>
-      {!user && "ethereum" in window && (
+      {!user && (
         <ConnectWrapper>
           <button
             onClick={() => {

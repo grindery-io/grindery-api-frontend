@@ -1,22 +1,18 @@
 import NexusClient from "grindery-nexus-client";
 import React, { createContext, useCallback, useEffect, useState } from "react";
-import { useGrinderyNexus } from "use-grindery-nexus";
+import { useGrinderyLogin } from "use-grindery-login";
 import { defaultFunc } from "../helpers/utils";
-import { sendTwitterConversion } from "../utils/twitterTracking";
-import { sendGoogleEvent } from "../utils/googleTracking";
 
 // Context props
 type ContextProps = {
   user: string | null;
   disconnect: any;
   connect: any;
-  accessAllowed: boolean;
-  verifying: boolean;
   client: NexusClient | null;
   isOptedIn: boolean;
-  chekingOptIn: boolean;
   userEmail: string;
   userProps: any;
+  checkingOptedIn: boolean;
   setIsOptedIn: (a: boolean) => void;
   setUserEmail: (a: string) => void;
   setUserProps: (a: any) => void;
@@ -32,13 +28,11 @@ export const AppContext = createContext<ContextProps>({
   user: null,
   disconnect: defaultFunc,
   connect: defaultFunc,
-  accessAllowed: false,
-  verifying: true,
   client: null,
   isOptedIn: false,
-  chekingOptIn: true,
   userEmail: "",
   userProps: {},
+  checkingOptedIn: true,
   setIsOptedIn: () => {},
   setUserEmail: () => {},
   setUserProps: () => {},
@@ -46,16 +40,11 @@ export const AppContext = createContext<ContextProps>({
 
 export const AppContextProvider = ({ children }: AppContextProps) => {
   // Auth hook
-  const { user, connect, disconnect, token: nexusToken } = useGrinderyNexus();
-
-  const [accessAllowed, setAccessAllowed] = useState<boolean>(false);
+  const { user, connect, disconnect, token: nexusToken } = useGrinderyLogin();
 
   const [isOptedIn, setIsOptedIn] = useState<boolean>(false);
 
-  const [chekingOptIn, setChekingOptIn] = useState<boolean>(true);
-
-  // verification state
-  const [verifying, setVerifying] = useState<boolean>(true);
+  const [checkingOptedIn, setCheckingOptedIn] = useState<boolean>(true);
 
   // Nexus API client
   const [client, setClient] = useState<NexusClient | null>(null);
@@ -77,10 +66,8 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
   );
 
   const verifyUser = async () => {
-    setVerifying(true);
     const res = await client?.isUserHasEmail().catch((err) => {
       console.error("isUserHasEmail error:", err.message);
-      setAccessAllowed(false);
     });
     if (res) {
       const props = await client?.getUserProps().catch((err) => {
@@ -88,7 +75,6 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
         setUserProps("");
       });
       setUserProps(props || {});
-      setAccessAllowed(true);
       const optinRes = await client?.isAllowedUser().catch((err) => {
         console.error("isAllowedUser error:", err.message);
         setIsOptedIn(false);
@@ -98,11 +84,8 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
       } else {
         setIsOptedIn(false);
       }
-    } else {
-      setAccessAllowed(false);
     }
-    setChekingOptIn(false);
-    setVerifying(false);
+    setCheckingOptedIn(false);
   };
 
   useEffect(() => {
@@ -118,29 +101,16 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
     }
   }, [user, initUser, nexusToken]);
 
-  useEffect(() => {
-    if (user) {
-      sendGoogleEvent({
-        event: "registration",
-        authentication_method: "wallet",
-        user_id: user,
-      });
-      sendTwitterConversion("tw-ofep3-ofep7");
-    }
-  }, [user]);
-
   return (
     <AppContext.Provider
       value={{
         user,
         disconnect,
         connect,
-        accessAllowed,
-        verifying,
         client,
         isOptedIn,
-        chekingOptIn,
         userEmail,
+        checkingOptedIn,
         setIsOptedIn,
         setUserEmail,
         userProps,

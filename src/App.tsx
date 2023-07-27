@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
 import { ThemeProvider } from "grindery-ui";
-import GrinderyNexusContextProvider from "use-grindery-nexus";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import AppContextProvider from "./context/AppContext";
 import HomePage from "./components/pages/HomePage";
-import EarlyAccessModal from "./components/shared/EarlyAccessModal";
 import AccountPage from "./components/pages/AccountPage";
 import { sendTwitterConversion } from "./utils/twitterTracking";
+import GrinderyLoginProvider from "use-grindery-login";
 
 function App() {
   useEffect(() => {
@@ -15,9 +14,8 @@ function App() {
 
   return (
     <ThemeProvider>
-      <GrinderyNexusContextProvider>
+      <GrinderyLoginProvider>
         <AppContextProvider>
-          <EarlyAccessModal />
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<HomePage />} />
@@ -26,7 +24,7 @@ function App() {
             </Routes>
           </BrowserRouter>
         </AppContextProvider>
-      </GrinderyNexusContextProvider>
+      </GrinderyLoginProvider>
     </ThemeProvider>
   );
 }

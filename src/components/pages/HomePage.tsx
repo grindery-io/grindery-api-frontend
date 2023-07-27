@@ -35,8 +35,7 @@ const ZapierWrapper = styled.div`
 type Props = {};
 
 const WelcomePage = (props: Props) => {
-  const { user, chekingOptIn, isOptedIn, setIsOptedIn, accessAllowed } =
-    useAppContext();
+  const { user, checkingOptedIn, isOptedIn, setIsOptedIn } = useAppContext();
 
   return (
     <Container>
@@ -62,7 +61,7 @@ const WelcomePage = (props: Props) => {
             />
           </ZapierWrapper>
           <Snackbar
-            open={accessAllowed && !chekingOptIn && !isOptedIn}
+            open={user && !checkingOptedIn && !isOptedIn}
             handleClose={(event: any, reason: any) => {
               if (reason === "clickaway") {
                 return;

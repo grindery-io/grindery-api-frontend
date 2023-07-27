@@ -1,6 +1,6 @@
 {
   "name": "grindery-gateway",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
@@ -25,6 +25,7 @@
     "react-scripts": "5.0.1",
     "styled-components": "^5.3.5",
     "typescript": "^4.7.4",
+    "use-grindery-login": "https://github.com/grindery-io/use-grindery-login",
     "use-grindery-nexus": "^0.4.2",
     "web-vitals": "^2.1.4"
   },

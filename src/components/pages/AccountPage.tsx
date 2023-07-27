@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Snackbar, RichInput, Select } from "grindery-ui";
+import { Snackbar, RichInput } from "grindery-ui";
 import ConnectButton from "../shared/ConnectButton";
 import styled from "styled-components";
-import { useGrinderyNexus } from "use-grindery-nexus";
+import { useGrinderyLogin } from "use-grindery-login";
 import useAppContext from "../../hooks/useAppContext";
 import Header from "../shared/Header";
 import AppHeader from "../shared/AppHeader";
@@ -303,7 +303,7 @@ type Props = {};
 const AccountPage = (props: Props) => {
   const { user, client, disconnect, userProps, setUserProps } = useAppContext();
 
-  const { address } = useGrinderyNexus();
+  const { address } = useGrinderyLogin();
   const [view, setView] = useState("account_edit");
   const [email, setEmail] = useState(userProps.email || "");
   const [firstname, setFirstname] = useState(userProps.firstname || "");
