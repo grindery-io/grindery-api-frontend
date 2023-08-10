@@ -20,6 +20,7 @@ function App() {
             <CircularProgress />
           </div>
         }
+        disconnectRedirectUrl="https://www.grindery.io/sign-out?sidebar_opened=1"
       >
         <AppContextProvider>
           <BrowserRouter>
