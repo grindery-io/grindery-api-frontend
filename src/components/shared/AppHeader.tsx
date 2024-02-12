@@ -152,7 +152,7 @@ const AppHeader = (props: Props) => {
       </AppsMenuWrapper>*/}
       <LinksWrapper>
         <a
-          href="https://www.grindery.io/wallet-course"
+          href="https://www.grindery.com/wallet-course"
           target="_blank"
           rel="noreferrer"
         >
